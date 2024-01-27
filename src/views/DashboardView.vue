@@ -60,7 +60,8 @@ const defaultLargePointChartOptions = () => ({
 export default {
     name: 'DashboardView',
     data() {
-        const realTimeSelectedDate = format(DATE_STRING_FORMAT, startOfDay(new Date()))
+        const today = new Date()
+        const realTimeSelectedDate = format(DATE_STRING_FORMAT, startOfDay(today))
         const defaultRealTimeData = realTimeDataMap[realTimeSelectedDate] ?? { data: [] }
         let initialRealTimeMinDateTime = undefined
         let initialRealTimeMaxDateTime = undefined
@@ -71,6 +72,7 @@ export default {
         }
 
         return {
+            today,
             useTimeDateRange: {
                 start: '',
                 end: ''
@@ -187,9 +189,10 @@ export default {
                                 class="form-control"
                                 v-model="useTimeDateRange"
                                 title-position="left"
-                                is-range
                                 :input-debounce="500"
+                                :max-date="today"
                                 :popover="{ visibility: 'hidden' }"
+                                is-range
                             >
                             </VDatePicker>
                         </div>
@@ -205,6 +208,7 @@ export default {
                         v-model="realTimeSelectedDate"
                         title-position="left"
                         :popover="{ visibility: 'click' }"
+                        :max-date="today"
                         :input-debounce="500"
                     >
                         <template #default="{ inputValue, inputEvents }">
