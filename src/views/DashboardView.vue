@@ -31,15 +31,15 @@ function truncateUseTimeDataByRange(useTimeData, { start, end }) {
             } else if (end) {
                 return isBeforeOrEqual(parsedDate, end)
             } else {
-                return true
+                return false
             }
         }),
         unzip
     )(useTimeData.data, useTimeData.dates)
 
     return {
-        data: truncatedUseTimeData[0],
-        dates: truncatedUseTimeData[1]
+        data: truncatedUseTimeData[0] ?? [],
+        dates: truncatedUseTimeData[1] ?? []
     }
 }
 
@@ -60,7 +60,7 @@ const defaultColumnChartOptions = () => ({
     },
     plotOptions: {
         column: {
-            pointPadding: 0.4,
+            pointPadding: 0.4
         }
     },
     title: {
