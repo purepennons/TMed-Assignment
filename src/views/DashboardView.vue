@@ -98,7 +98,8 @@ const defaultColumnChartOptions = () => ({
 const defaultLargePointChartOptions = () => ({
     chart: {
         type: 'line',
-        zoomType: 'x'
+        zoomType: 'x',
+        height: 207
     },
     title: {
         text: '',
@@ -189,6 +190,11 @@ export default {
         formaUseTimeDateEnd() {
             return this.useTimeDateRange.end
                 ? format(DATE_INPUT_FORMAT, this.useTimeDateRange.end)
+                : ''
+        },
+        formatRealTimeSelectedDate() {
+            return this.realTimeSelectedDate
+                ? format(DATE_INPUT_FORMAT, toUTCDate(this.realTimeSelectedDate))
                 : ''
         }
     },
@@ -312,15 +318,15 @@ export default {
                             :max-date="today"
                             :input-debounce="500"
                         >
-                            <template #default="{ inputValue, inputEvents }">
+                            <template #default="{ inputEvents }">
                                 <div class="input-group calendar-input">
                                     <InputWithIcon
                                         class="form-control"
                                         type="text"
-                                        :readonly="true"
-                                        :value="inputValue"
-                                        :svgIconComponent="CalendarIcon"
+                                        v-model="formatRealTimeSelectedDate"
                                         v-on="inputEvents"
+                                        :readonly="true"
+                                        :svgIconComponent="CalendarIcon"
                                     />
                                 </div>
                             </template>
@@ -350,6 +356,7 @@ label {
 nav {
     background: #fafafa;
     border-right: 0.75px solid #d9d9d9;
+    height: 100vh;
 
     .logo {
         max-height: 34px;
@@ -403,6 +410,9 @@ main {
         border-radius: 8px;
         border: 2px solid #ededed;
         box-shadow: 0px 0px 0px 3px rgba(221, 221, 221, 0.16);
+    }
+
+    .real-time-chart {
     }
 }
 
