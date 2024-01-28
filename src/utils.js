@@ -1,4 +1,4 @@
-import { parse, isDate } from 'date-fns'
+import { parse, isDate, isAfter, isBefore, isSameDay } from 'date-fns'
 import { zonedTimeToUtc } from 'date-fns-tz'
 import { TIME_ZONE, DATE_STRING_FORMAT } from './constants'
 
@@ -14,3 +14,6 @@ export function toUTCDate(
 
     return zonedTimeToUtc(date, options.timeZone)
 }
+
+export const isAfterOrEqual = (comparedDate, date) => isAfter(comparedDate, date) || isSameDay(comparedDate, date)
+export const isBeforeOrEqual = (comparedDate, date) => isBefore(comparedDate, date) || isSameDay(comparedDate, date)

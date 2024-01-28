@@ -1,8 +1,8 @@
 <script>
-import { subHours, addHours, startOfDay, getTime, addDays, format } from 'date-fns/fp'
-import { pipe, map, defaultsDeep } from 'lodash/fp'
+import { subHours, addHours, startOfDay, getTime, addDays, format, parse } from 'date-fns/fp'
+import { pipe, map, defaultsDeep, zip, unzip, filter } from 'lodash/fp'
 
-import { toUTCDate } from '@/utils'
+import { toUTCDate, isAfterOrEqual, isBeforeOrEqual } from '@/utils'
 import { TIME_ZONE, DATE_STRING_FORMAT, DATE_INPUT_FORMAT } from '@/constants'
 
 import useTimeData from '@/data/use_time.json'
@@ -17,12 +17,71 @@ function getDateTimeBoundaries(date) {
     return [getTime(subHours(period)(baseDate)), getTime(addHours(period)(baseDate))]
 }
 
+function truncateUseTimeDataByRange(useTimeData, { start, end }) {
+    const parseWithFormat = parse(new Date(), 'yyyy-MM-dd')
+    const truncatedUseTimeData = pipe(
+        zip,
+        filter(([, date]) => {
+            const parsedDate = parseWithFormat(date)
+
+            if (start && end) {
+                return isAfterOrEqual(parsedDate, start) && isBeforeOrEqual(parsedDate, end)
+            } else if (start) {
+                return isAfterOrEqual(parsedDate, start)
+            } else if (end) {
+                return isBeforeOrEqual(parsedDate, end)
+            } else {
+                return true
+            }
+        }),
+        unzip
+    )(useTimeData.data, useTimeData.dates)
+
+    return {
+        data: truncatedUseTimeData[0],
+        dates: truncatedUseTimeData[1]
+    }
+}
+
 const normalizeRealTimeData = map(([x, y]) => [toUTCDate(x), y])
 
 const realTimeDataMap = {
     '2024-01-16 00:00:00.000': realTimeData20240116,
     '2024-01-18 00:00:00.000': realTimeData20240118
 }
+
+const defaultUseTimeDateRange = () => ({
+    start: '',
+    end: ''
+})
+const defaultColumnChartOptions = () => ({
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        categories: []
+    },
+    yAxis: {
+        title: {
+            text: ''
+        },
+        min: 0,
+        tickInterval: 5
+    },
+    legend: {
+        align: 'left',
+        verticalAlign: 'top'
+    },
+    series: [
+        {
+            name: 'USETIME(h)',
+            data: []
+        }
+    ]
+})
 
 const defaultLargePointChartOptions = () => ({
     chart: {
@@ -61,6 +120,10 @@ export default {
     name: 'DashboardView',
     data() {
         const today = new Date()
+        const defaultUseTimeData = truncateUseTimeDataByRange(useTimeData, {
+            start: '',
+            end: ''
+        })
         const realTimeSelectedDate = format(DATE_STRING_FORMAT, startOfDay(today))
         const defaultRealTimeData = realTimeDataMap[realTimeSelectedDate] ?? { data: [] }
         let initialRealTimeMinDateTime = undefined
@@ -73,38 +136,18 @@ export default {
 
         return {
             today,
-            useTimeDateRange: {
-                start: '',
-                end: ''
-            },
-            columnChartOptions: {
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: ''
-                },
+            useTimeDateRange: defaultUseTimeDateRange(),
+            columnChartOptions: defaultsDeep(defaultColumnChartOptions())({
                 xAxis: {
-                    categories: useTimeData.dates
-                },
-                yAxis: {
-                    title: {
-                        text: ''
-                    },
-                    min: 0,
-                    tickInterval: 5
-                },
-                legend: {
-                    align: 'left',
-                    verticalAlign: 'top'
+                    categories: defaultUseTimeData.dates
                 },
                 series: [
                     {
                         name: 'USETIME(h)',
-                        data: useTimeData.data
+                        data: defaultUseTimeData.data
                     }
                 ]
-            },
+            }),
             realTimeSelectedDate,
             largePointChartOptions: defaultsDeep(defaultLargePointChartOptions())({
                 xAxis: {
@@ -132,6 +175,16 @@ export default {
         }
     },
     methods: {
+        handleUseTimeDateRangeChange() {
+            const { start, end } = this.useTimeDateRange
+            const truncatedUseTimeData = truncateUseTimeDataByRange(useTimeData, {
+                start,
+                end
+            })
+
+            this.columnChartOptions.xAxis.categories = truncatedUseTimeData.dates
+            this.columnChartOptions.series[0].data = truncatedUseTimeData.data
+        },
         handleRealTimeDateChange() {
             const dateString = format(DATE_STRING_FORMAT, this.realTimeSelectedDate)
             const realTimeData = realTimeDataMap[dateString]
@@ -150,6 +203,9 @@ export default {
         }
     },
     watch: {
+        useTimeDateRange() {
+            this.handleUseTimeDateRangeChange()
+        },
         realTimeSelectedDate() {
             this.handleRealTimeDateChange()
         }
