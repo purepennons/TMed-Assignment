@@ -298,10 +298,12 @@ export default {
             </nav>
             <main class="col-sm-12 col-lg-9 px-0">
                 <header class="container-fluid">
-                    <h1>Miller, Jonathan</h1>
                     <div>
-                        <span>DOB: 11 / 14 / 1980 </span>
-                        <span>SN: CP01832648</span>
+                        <h1>Miller, Jonathan</h1>
+                        <div class="subtitle">
+                            <span>DOB: 11 / 14 / 1980 </span>
+                            <span>SN: CP01832648</span>
+                        </div>
                     </div>
                 </header>
                 <div class="chart-container container-fluid">
@@ -441,15 +443,20 @@ header {
     height: 157px;
     background: #f1f3f4;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
-    padding: 90px 0 10px 58px;
+    padding: 90px 190px 0 58px;
 
-    & h1 {
-        font-size: 20px;
-    }
+    & > div {
+        border-bottom: 1px solid #c4c4c4;
 
-    & span {
-        font-size: 14px;
-        color: #727171;
+        & h1 {
+            font-size: 20px;
+        }
+
+        & .subtitle {
+            font-size: 14px;
+            color: #727171;
+            margin-bottom: 10px;
+        }
     }
 }
 </style>
