@@ -289,14 +289,21 @@ export default {
                     </div>
                 </div>
             </nav>
-            <main class="col-sm-12 col-lg-9">
+            <main class="col-sm-12 col-lg-9 px-0">
+                <header class="container-fluid">
+                    <h1>Miller, Jonathan</h1>
+                    <div>
+                        <span>DOB: 11 / 14 / 1980 </span>
+                        <span>SN: CP01832648</span>
+                    </div>
+                </header>
                 <div class="chart-container container-fluid">
-                    <div class="use-time-chart">
+                    <div class="chart-item use-time-chart">
                         <highcharts :options="columnChartOptions"></highcharts>
                     </div>
                 </div>
                 <div class="chart-container container-fluid">
-                    <div class="real-time-chart">
+                    <div class="chart-item real-time-chart">
                         <VDatePicker
                             v-model="realTimeSelectedDate"
                             title-position="left"
@@ -327,10 +334,17 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-label {
-    font-size: 15px;
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-family: 'Inter';
     font-weight: 600;
     line-height: 140%;
+}
+
+label {
+    font-size: 15px;
 }
 
 nav {
@@ -340,7 +354,6 @@ nav {
     .logo {
         max-height: 34px;
         color: #0e1123;
-        font-family: 'Poppins';
         font-size: 33px;
         font-style: normal;
         font-weight: 400;
@@ -352,6 +365,7 @@ nav {
         }
 
         > span {
+            font-family: 'Poppins';
             margin-top: -5px;
             margin-left: -9px;
         }
@@ -373,7 +387,15 @@ nav {
 
 main {
     > .chart-container {
-        margin-bottom: 39px;
+        margin: 26px 0 39px 0;
+        padding: 0 12px 0 58px;
+
+        > .chart-item {
+            border-radius: 8px;
+            border: 2px solid #ededed;
+            background: white;
+            box-shadow: 0px 0px 0px 3px rgba(221, 221, 221, 0.16);
+        }
     }
 
     .use-time-chart {
@@ -382,7 +404,21 @@ main {
         border: 2px solid #ededed;
         box-shadow: 0px 0px 0px 3px rgba(221, 221, 221, 0.16);
     }
+}
 
-    background: tomato;
+header {
+    height: 157px;
+    background: #f1f3f4;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    padding: 90px 0 10px 58px;
+
+    & h1 {
+        font-size: 20px;
+    }
+
+    & span {
+        font-size: 14px;
+        color: #727171;
+    }
 }
 </style>
