@@ -58,6 +58,11 @@ const defaultColumnChartOptions = () => ({
     chart: {
         type: 'column'
     },
+    plotOptions: {
+        column: {
+            pointPadding: 0.4,
+        }
+    },
     title: {
         text: ''
     },
@@ -78,6 +83,7 @@ const defaultColumnChartOptions = () => ({
     series: [
         {
             name: 'USETIME(h)',
+            color: '#06BF92',
             data: []
         }
     ]
@@ -217,49 +223,47 @@ export default {
     <div class="dashboard container-fluid">
         <div class="row">
             <nav class="col-lg-3">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-5">
-                            <div class="input-group">
-                                <input
-                                    class="form-control"
-                                    :readonly="true"
-                                    v-model="formatUseTimeDateStart"
-                                />
-                            </div>
-                        </div>
-                        <div class="col-lg-2">&lt;></div>
-                        <div class="col-lg-5">
-                            <div class="input-group">
-                                <input
-                                    class="form-control"
-                                    :readonly="true"
-                                    v-model="formaUseTimeDateEnd"
-                                />
-                            </div>
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="input-group">
+                            <input
+                                class="form-control"
+                                :readonly="true"
+                                v-model="formatUseTimeDateStart"
+                            />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <VDatePicker
+                    <div class="col-lg-2">&lt;></div>
+                    <div class="col-lg-5">
+                        <div class="input-group">
+                            <input
                                 class="form-control"
-                                v-model="useTimeDateRange"
-                                title-position="left"
-                                :input-debounce="500"
-                                :max-date="today"
-                                :popover="{ visibility: 'hidden' }"
-                                is-range
-                            >
-                            </VDatePicker>
+                                :readonly="true"
+                                v-model="formaUseTimeDateEnd"
+                            />
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <VDatePicker
+                            class="form-control"
+                            v-model="useTimeDateRange"
+                            title-position="left"
+                            :input-debounce="500"
+                            :max-date="today"
+                            :popover="{ visibility: 'hidden' }"
+                            is-range
+                        >
+                        </VDatePicker>
                     </div>
                 </div>
             </nav>
             <main class="col-sm-12 col-lg-9">
-                <div class="container-fluid">
+                <div class="chart-container use-time-chart container-fluid">
                     <highcharts :options="columnChartOptions"></highcharts>
                 </div>
-                <div class="container-fluid">
+                <div class="chart-container real-time-chart container-fluid">
                     <VDatePicker
                         v-model="realTimeSelectedDate"
                         title-position="left"
@@ -289,6 +293,15 @@ nav {
 }
 
 main {
+    > .chart-container {
+        margin-bottom: 39px;
+    }
+
+    .use-time-chart {
+        border-radius: 8px;
+        border: 2px solid #ededed;
+    }
+
     background: tomato;
 }
 </style>
