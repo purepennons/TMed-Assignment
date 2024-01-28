@@ -8,7 +8,8 @@ import { TIME_ZONE, DATE_STRING_FORMAT, DATE_INPUT_FORMAT } from '@/constants'
 import InputWithIcon from '@/components/InputWithIcon.vue'
 import CalendarIcon from '@/components/icons/IconCalendar.vue'
 import TwoSideArrowsIcon from '@/components/icons/IconTwoSideArrows.vue'
-import TMedLogo from '@/components/Logo.vue'
+
+import logoImgURL from '@/assets/TMedTech-logo.png'
 
 import useTimeData from '@/data/use_time.json'
 import realTimeData20240116 from '@/data/real_time_20240116.json'
@@ -133,8 +134,7 @@ export default {
     name: 'DashboardView',
     components: {
         InputWithIcon,
-        TwoSideArrowsIcon,
-        TMedLogo
+        TwoSideArrowsIcon
     },
     data() {
         const today = new Date()
@@ -154,6 +154,7 @@ export default {
 
         return {
             CalendarIcon,
+            logoImgURL,
             today,
             useTimeDateRange: defaultUseTimeDateRange(),
             columnChartOptions: defaultsDeep(defaultColumnChartOptions())({
@@ -242,7 +243,10 @@ export default {
         <div class="row">
             <nav class="col-lg-3">
                 <div class="row">
-                    <TMedLogo />
+                    <div class="logo d-flex justify-content-center">
+                        <img :src="logoImgURL" alt="TMedTech" />
+                        <span>Portal</span>
+                    </div>
                 </div>
                 <div class="row calendar-input-row justify-content-center">
                     <div class="col-lg-5 px-0 d-flex justify-content-end">
@@ -364,6 +368,26 @@ nav {
     background: #fafafa;
     border-right: 0.75px solid #d9d9d9;
     height: 100vh;
+
+    .logo {
+        max-height: 34px;
+        color: #0e1123;
+        font-style: normal;
+        margin: 95px 0 34px 0;
+        
+        > span,
+        img {
+            vertical-align: baseline;
+        }
+        
+        > span {
+            font-family: 'Poppins';
+            font-weight: 400;
+            font-size: 33px;
+            margin-top: -5px;
+            margin-left: -9px;
+        }
+    }
 
     & .calendar-input-row {
         margin-bottom: 16px;
