@@ -281,11 +281,12 @@ export default {
                 <div class="row">
                     <div class="range-date-picker col-12 d-flex justify-content-center">
                         <VDatePicker
-                            class="form-control"
+                            class="vc-calendar-date-picker"
                             v-model="useTimeDateRange"
                             title-position="left"
                             expanded
                             borderless
+                            color="green"
                             :input-debounce="500"
                             :max-date="today"
                             :popover="{ visibility: 'hidden' }"
@@ -314,8 +315,10 @@ export default {
                             <p>PulseRate</p>
                             <span>⌵</span>
                             <VDatePicker
+                                class="vc-calendar-date-picker"
                                 v-model="realTimeSelectedDate"
                                 title-position="left"
+                                color="green"
                                 borderless
                                 :popover="{ visibility: 'click' }"
                                 :max-date="today"
@@ -431,8 +434,6 @@ main {
                 width: 125px;
             }
         }
-
-
     }
 }
 
