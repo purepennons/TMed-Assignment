@@ -310,27 +310,32 @@ export default {
                 </div>
                 <div class="chart-container container-fluid">
                     <div class="chart-item real-time-chart">
-                        <VDatePicker
-                            v-model="realTimeSelectedDate"
-                            title-position="left"
-                            borderless
-                            :popover="{ visibility: 'click' }"
-                            :max-date="today"
-                            :input-debounce="500"
-                        >
-                            <template #default="{ inputEvents }">
-                                <div class="input-group calendar-input">
-                                    <InputWithIcon
-                                        class="form-control"
-                                        type="text"
-                                        v-model="formatRealTimeSelectedDate"
-                                        v-on="inputEvents"
-                                        :readonly="true"
-                                        :svgIconComponent="CalendarIcon"
-                                    />
-                                </div>
-                            </template>
-                        </VDatePicker>
+                        <div class="real-time-input-container d-flex align-items-center">
+                            <p>PulseRate</p>
+                            <span>⌵</span>
+                            <VDatePicker
+                                v-model="realTimeSelectedDate"
+                                title-position="left"
+                                borderless
+                                :popover="{ visibility: 'click' }"
+                                :max-date="today"
+                                :input-debounce="500"
+                            >
+                                <template #default="{ inputEvents }">
+                                    <div class="input-group calendar-input single-date-picker">
+                                        <InputWithIcon
+                                            class="form-control"
+                                            type="text"
+                                            v-model="formatRealTimeSelectedDate"
+                                            v-on="inputEvents"
+                                            :readonly="true"
+                                            :svgIconComponent="CalendarIcon"
+                                        />
+                                    </div>
+                                </template>
+                            </VDatePicker>
+                        </div>
+
                         <highcharts :options="largePointChartOptions"></highcharts>
                     </div>
                 </div>
@@ -361,7 +366,6 @@ nav {
     .logo {
         max-height: 34px;
         color: #0e1123;
-        font-size: 33px;
         font-style: normal;
         font-weight: 400;
         margin: 95px 0 34px 0;
@@ -373,6 +377,7 @@ nav {
 
         > span {
             font-family: 'Poppins';
+            font-size: 33px;
             margin-top: -5px;
             margin-left: -9px;
         }
@@ -413,6 +418,21 @@ main {
     }
 
     .real-time-chart {
+        padding: 20px 20px 38px 20px;
+        & .real-time-input-container {
+            & p {
+                margin: 0;
+            }
+
+            & span {
+                margin: 0 10px;
+            }
+            & .single-date-picker {
+                width: 125px;
+            }
+        }
+
+
     }
 }
 

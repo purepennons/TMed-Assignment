@@ -33,6 +33,8 @@ export default {
 
     & > input {
         border-radius: 8px;
+        font-size: 12px;
+        padding-right: 0px;
     }
 
     & > span {
