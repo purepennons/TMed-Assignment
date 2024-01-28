@@ -9,11 +9,11 @@ const router = createRouter({
       name: 'dashboard',
       component: DashboardView
     },
-    // {
-    //   path: '/dashboard',
-    //   name: 'dashboard',
-    //   component: () => import('../views/DashboardView.vue')
-    // }
+    {
+      path: '/resetpassword',
+      name: 'resetpassword',
+      component: () => import('../views/ResetPasswordView.vue')
+    }
   ]
 })
 
