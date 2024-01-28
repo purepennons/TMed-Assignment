@@ -5,6 +5,11 @@ import { pipe, map, defaultsDeep, zip, unzip, filter } from 'lodash/fp'
 import { toUTCDate, isAfterOrEqual, isBeforeOrEqual } from '@/utils'
 import { TIME_ZONE, DATE_STRING_FORMAT, DATE_INPUT_FORMAT } from '@/constants'
 
+import InputWithIcon from '@/components/InputWithIcon.vue'
+import CalendarIcon from '@/components/icons/IconCalendar.vue'
+import TwoSideArrowsIcon from '@/components/icons/IconTwoSideArrows.vue'
+import logoImgURL from '@/assets/TMedTech-logo.png'
+
 import useTimeData from '@/data/use_time.json'
 import realTimeData20240116 from '@/data/real_time_20240116.json'
 import realTimeData20240118 from '@/data/real_time_20240118.json'
@@ -56,7 +61,8 @@ const defaultUseTimeDateRange = () => ({
 })
 const defaultColumnChartOptions = () => ({
     chart: {
-        type: 'column'
+        type: 'column',
+        height: 164
     },
     plotOptions: {
         column: {
@@ -124,6 +130,10 @@ const defaultLargePointChartOptions = () => ({
 
 export default {
     name: 'DashboardView',
+    components: {
+        InputWithIcon,
+        TwoSideArrowsIcon
+    },
     data() {
         const today = new Date()
         const defaultUseTimeData = truncateUseTimeDataByRange(useTimeData, {
@@ -141,6 +151,8 @@ export default {
         }
 
         return {
+            CalendarIcon,
+            logoImgURL,
             today,
             useTimeDateRange: defaultUseTimeDateRange(),
             columnChartOptions: defaultsDeep(defaultColumnChartOptions())({
@@ -224,32 +236,50 @@ export default {
         <div class="row">
             <nav class="col-lg-3">
                 <div class="row">
-                    <div class="col-lg-5">
-                        <div class="input-group">
-                            <input
+                    <div class="logo d-flex justify-content-center">
+                        <img :src="logoImgURL" alt="TMedTech" />
+                        <span>Portal</span>
+                    </div>
+                </div>
+                <div class="row calendar-input-row justify-content-center">
+                    <div class="col-lg-5 px-0 d-flex justify-content-end">
+                        <div class="input-group calendar-input">
+                            <label for="range.start" class="form-label">Start Date</label>
+                            <InputWithIcon
+                                id="range.start"
                                 class="form-control"
                                 :readonly="true"
                                 v-model="formatUseTimeDateStart"
+                                :svgIconComponent="CalendarIcon"
                             />
                         </div>
                     </div>
-                    <div class="col-lg-2">&lt;></div>
-                    <div class="col-lg-5">
-                        <div class="input-group">
-                            <input
+                    <div
+                        class="two-side-arrows-icon col-lg-1 px-0 d-flex justify-content-center align-items-center"
+                    >
+                        <TwoSideArrowsIcon />
+                    </div>
+                    <div class="col-lg-5 px-0 d-flex justify-content-start">
+                        <div class="input-group calendar-input">
+                            <label for="range.end" class="form-label">End Date</label>
+                            <InputWithIcon
+                                id="range.end"
                                 class="form-control"
                                 :readonly="true"
                                 v-model="formaUseTimeDateEnd"
+                                :svgIconComponent="CalendarIcon"
                             />
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="range-date-picker col-12 d-flex justify-content-center">
                         <VDatePicker
                             class="form-control"
                             v-model="useTimeDateRange"
                             title-position="left"
+                            expanded
+                            borderless
                             :input-debounce="500"
                             :max-date="today"
                             :popover="{ visibility: 'hidden' }"
@@ -260,27 +290,36 @@ export default {
                 </div>
             </nav>
             <main class="col-sm-12 col-lg-9">
-                <div class="chart-container use-time-chart container-fluid">
-                    <highcharts :options="columnChartOptions"></highcharts>
+                <div class="chart-container container-fluid">
+                    <div class="use-time-chart">
+                        <highcharts :options="columnChartOptions"></highcharts>
+                    </div>
                 </div>
-                <div class="chart-container real-time-chart container-fluid">
-                    <VDatePicker
-                        v-model="realTimeSelectedDate"
-                        title-position="left"
-                        :popover="{ visibility: 'click' }"
-                        :max-date="today"
-                        :input-debounce="500"
-                    >
-                        <template #default="{ inputValue, inputEvents }">
-                            <input
-                                type="text"
-                                :readonly="true"
-                                :value="inputValue"
-                                v-on="inputEvents"
-                            />
-                        </template>
-                    </VDatePicker>
-                    <highcharts :options="largePointChartOptions"></highcharts>
+                <div class="chart-container container-fluid">
+                    <div class="real-time-chart">
+                        <VDatePicker
+                            v-model="realTimeSelectedDate"
+                            title-position="left"
+                            borderless
+                            :popover="{ visibility: 'click' }"
+                            :max-date="today"
+                            :input-debounce="500"
+                        >
+                            <template #default="{ inputValue, inputEvents }">
+                                <div class="input-group calendar-input">
+                                    <InputWithIcon
+                                        class="form-control"
+                                        type="text"
+                                        :readonly="true"
+                                        :value="inputValue"
+                                        :svgIconComponent="CalendarIcon"
+                                        v-on="inputEvents"
+                                    />
+                                </div>
+                            </template>
+                        </VDatePicker>
+                        <highcharts :options="largePointChartOptions"></highcharts>
+                    </div>
                 </div>
             </main>
         </div>
@@ -288,8 +327,48 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+label {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 140%;
+}
+
 nav {
-    background: yellow;
+    background: #fafafa;
+    border-right: 0.75px solid #d9d9d9;
+
+    .logo {
+        max-height: 34px;
+        color: #0e1123;
+        font-family: 'Poppins';
+        font-size: 33px;
+        font-style: normal;
+        font-weight: 400;
+        margin: 95px 0 34px 0;
+
+        > span,
+        img {
+            vertical-align: baseline;
+        }
+
+        > span {
+            margin-top: -5px;
+            margin-left: -9px;
+        }
+    }
+
+    & .calendar-input-row {
+        margin-bottom: 16px;
+
+        & .two-side-arrows-icon {
+            height: 38px;
+            align-self: flex-end;
+        }
+    }
+
+    & .range-date-picker {
+        padding: 0 24px;
+    }
 }
 
 main {
@@ -298,8 +377,10 @@ main {
     }
 
     .use-time-chart {
+        padding: 34px 17px 17px 17px;
         border-radius: 8px;
         border: 2px solid #ededed;
+        box-shadow: 0px 0px 0px 3px rgba(221, 221, 221, 0.16);
     }
 
     background: tomato;
