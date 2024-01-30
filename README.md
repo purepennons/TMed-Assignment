@@ -1,8 +1,9 @@
 # TMed-Assignment
-## Recommended IDE Setup
+## Online Demo
+* [Dashboard Page](https://purepennons.github.io/TMed-Assignment/)
+* [Reset Password Page](https://purepennons.github.io/TMed-Assignment/resetpassword)
 
 ## Project Setup
-
 ```sh
 npm install
 ```
