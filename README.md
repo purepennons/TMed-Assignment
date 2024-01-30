@@ -1,7 +1,6 @@
 # TMed-Assignment
 ## Online Demo
-* [Dashboard Page](https://purepennons.github.io/TMed-Assignment/)
-* [Reset Password Page](https://purepennons.github.io/TMed-Assignment/resetpassword)
+* [https://purepennons.github.io/TMed-Assignment/](https://purepennons.github.io/TMed-Assignment/)
 
 ## Project Setup
 ```sh
