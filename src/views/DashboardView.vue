@@ -150,7 +150,8 @@ const defaultLargePointChartOptions = () => ({
         title: {
             text: 'Pulse'
         },
-        tickInterval: 25
+        tickInterval: 25,
+        min: 0,
     },
     legend: {
         enabled: false
