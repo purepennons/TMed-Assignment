@@ -29,7 +29,11 @@ export default {
 <template>
     <div
         class="reset-password-page container-fluid justify-content-center align-items-center"
-        :style="{ backgroundImage: `url(${bgImgURL})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }"
+        :style="{
+            backgroundImage: `url(${bgImgURL})`,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat'
+        }"
     >
         <RouterLink class="go-home-btn" to="/">
             <LeftArrowIcon />
@@ -106,6 +110,7 @@ export default {
     </div>
 </template>
 <style lang="scss" scoped>
+@import "@/main.scss";
 .reset-password-page {
     width: 100vw;
     height: 100vh;
@@ -179,8 +184,9 @@ export default {
             }
 
             & .input-group {
-                input, .input-group-text {
-                    border: 1px solid #379A5C;
+                input,
+                .input-group-text {
+                    border: 1px solid #379a5c;
                     border-radius: 5px;
                 }
 
@@ -273,6 +279,13 @@ export default {
                 text-wrap: nowrap;
                 padding: 12px 96px;
             }
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .go-home-btn {
+            margin-top: 20px;
+            margin-left: 10px;
         }
     }
 }
