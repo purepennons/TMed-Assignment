@@ -11,6 +11,7 @@ import {
 } from 'date-fns/fp'
 import { pipe, map, defaultsDeep, zip, unzip, filter } from 'lodash/fp'
 import Highcharts from 'highcharts'
+import { RouterLink } from 'vue-router'
 
 import { toUTCDate, isAfterOrEqual, isBeforeOrEqual } from '@/utils'
 import { TIME_ZONE, DATE_STRING_FORMAT, DATE_INPUT_FORMAT } from '@/constants'
@@ -196,7 +197,8 @@ export default {
     name: 'DashboardView',
     components: {
         InputWithIcon,
-        TwoSideArrowsIcon
+        TwoSideArrowsIcon,
+        RouterLink
     },
     data() {
         const today = new Date()
@@ -302,6 +304,7 @@ export default {
 
 <template>
     <div class="dashboard container-fluid">
+        <RouterLink class="go-reset-password" to="/resetpassword">Reset Password -></RouterLink>
         <div class="row">
             <nav class="col-lg-3">
                 <div class="row">
@@ -423,6 +426,14 @@ export default {
     font-family: 'Inter';
     font-weight: 600;
     line-height: 140%;
+}
+
+.go-reset-password {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    text-decoration: none;
+    font-size: 14px;
 }
 
 .custom-tooltip {
