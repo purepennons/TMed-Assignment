@@ -10,15 +10,58 @@
 
 // v-calendar overwrite
 .vc-calendar-date-picker {
-    &.vc-container {
-        border-radius: 8px;
-        border-bottom: 3px solid #ededed;
-        background: white;
-        box-shadow: 0px 0px 0px 3px rgba(221, 221, 221, 0.16);
+    & * {
+        font-family: 'Inter';
+        font-size: 12px;
+        font-weight: 400;
+        font-style: normal;
+        line-height: 16px;
+        color: #727171;
     }
 
     & .vc-title,
     .vc-arrow {
         background: white;
+    }
+
+    &.vc-container {
+        border-radius: 8px;
+        border-bottom: 3px solid #ededed;
+        box-shadow: 0px 0px 0px 3px rgba(221, 221, 221, 0.16);
+    }
+
+    & .vc-header {
+        * {
+            color: #121212;
+        }
+
+        & .vc-title-wrapper span {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+        }
+    }
+
+    & .vc-highlight-bg-light {
+        background-color: #f1f2ff;
+        border-top: 1px solid #2BA558;
+        border-bottom: 1px solid #2BA558;
+
+        &.vc-highlight-base-start, &.vc-highlight-base-end {
+            background: #2BA558;
+        }
+    }
+
+    & .vc-highlight-bg-solid {
+        border-radius: 8px;
+    }
+
+    & .vc-highlight-content-solid {
+        color: white;
+    }
+
+    & .vc-highlight-content-light {
+        color: #2BA558;
+
     }
 }

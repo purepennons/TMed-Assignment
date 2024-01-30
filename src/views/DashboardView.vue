@@ -351,6 +351,8 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+@import "@/main.scss";
+
 * {
     font-family: 'Inter';
     font-weight: 600;
@@ -371,12 +373,12 @@ nav {
         color: #0e1123;
         font-style: normal;
         margin: 95px 0 34px 0;
-        
+
         > span,
         img {
             vertical-align: baseline;
         }
-        
+
         > span {
             font-family: 'Poppins';
             font-weight: 400;
@@ -455,6 +457,12 @@ header {
             color: #727171;
             margin-bottom: 10px;
         }
+    }
+}
+
+@include media-breakpoint-down(md) {
+    nav {
+        height: auto;
     }
 }
 </style>
