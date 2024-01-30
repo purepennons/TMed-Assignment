@@ -1,6 +1,16 @@
 <script>
-import { subHours, addHours, startOfDay, getTime, addDays, format, parse } from 'date-fns/fp'
+import {
+    subHours,
+    addHours,
+    startOfDay,
+    getTime,
+    addDays,
+    subSeconds,
+    format,
+    parse
+} from 'date-fns/fp'
 import { pipe, map, defaultsDeep, zip, unzip, filter } from 'lodash/fp'
+import Highcharts from 'highcharts'
 
 import { toUTCDate, isAfterOrEqual, isBeforeOrEqual } from '@/utils'
 import { TIME_ZONE, DATE_STRING_FORMAT, DATE_INPUT_FORMAT } from '@/constants'
@@ -20,7 +30,10 @@ function getDateTimeBoundaries(date) {
 
     const baseDate = pipe(toUTCDate, startOfDay, addDays(1))(date)
 
-    return [getTime(subHours(period)(baseDate)), getTime(addHours(period)(baseDate))]
+    return [
+        getTime(subHours(period)(baseDate)),
+        getTime(pipe(addHours(period), subSeconds(1))(baseDate))
+    ]
 }
 
 function truncateUseTimeDataByRange(useTimeData, { start, end }) {
@@ -63,7 +76,10 @@ const defaultUseTimeDateRange = () => ({
 const defaultColumnChartOptions = () => ({
     chart: {
         type: 'column',
-        height: 164
+        height: 164,
+        style: {
+            fontFamily: 'Inter'
+        }
     },
     plotOptions: {
         column: {
@@ -81,11 +97,26 @@ const defaultColumnChartOptions = () => ({
             text: ''
         },
         min: 0,
-        tickInterval: 5
+        tickInterval: 5,
+        lineWidth: 1,
+        lineColor: '#000000'
     },
     legend: {
         align: 'left',
         verticalAlign: 'top'
+    },
+    tooltip: {
+        formatter: function () {
+            return `
+                <div>
+                    <span>${this.x}</span><br/>
+                    <span style="color: ${this.color}">${this.series.name}:</span> <b>${this.y}</b><br/>
+                </div>
+            `
+        }
+    },
+    time: {
+        timezone: TIME_ZONE
     },
     series: [
         {
@@ -100,7 +131,10 @@ const defaultLargePointChartOptions = () => ({
     chart: {
         type: 'line',
         zoomType: 'x',
-        height: 207
+        height: 207,
+        style: {
+            fontFamily: 'Inter'
+        }
     },
     title: {
         text: '',
@@ -108,6 +142,7 @@ const defaultLargePointChartOptions = () => ({
     },
     xAxis: {
         type: 'datetime',
+        crosshair: true,
         tickInterval: 3600 * 1000
     },
     yAxis: {
@@ -119,13 +154,40 @@ const defaultLargePointChartOptions = () => ({
     legend: {
         enabled: false
     },
+    tooltip: {
+        formatter: function () {
+            return `<span style="color: ${this.color}">\u25CF</span> ${this.series.name}: <b>${this.y}</b><br/>`
+        }
+    },
     time: {
         timezone: TIME_ZONE
     },
     series: [
         {
             name: 'Pulse',
-            data: []
+            pointIntervalUnit: 'hour',
+            data: [],
+            point: {
+                events: {
+                    mouseOver: function () {
+                        const tooltip_width = 126
+                        const chart = this.series.chart
+                        const customTooltip = document.getElementById('custom-tooltip')
+                        const xPos = chart.plotLeft + this.plotX - tooltip_width / 2
+                        const yPos = chart.plotTop + chart.plotHeight
+
+                        customTooltip.innerHTML = Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x)
+                        customTooltip.style.width = `${tooltip_width}px`
+                        customTooltip.style.left = `${xPos}px`
+                        customTooltip.style.top = `${yPos}px`
+                        customTooltip.style.display = 'block'
+                    },
+                    mouseOut: function () {
+                        const customTooltip = document.getElementById('custom-tooltip')
+                        customTooltip.style.display = 'none'
+                    }
+                }
+            }
         }
     ]
 })
@@ -341,8 +403,10 @@ export default {
                                 </template>
                             </VDatePicker>
                         </div>
-
-                        <highcharts :options="largePointChartOptions"></highcharts>
+                        <div class="large-point-chart">
+                            <div id="custom-tooltip" class="custom-tooltip"></div>
+                            <highcharts :options="largePointChartOptions"></highcharts>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -351,12 +415,29 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-@import "@/main.scss";
+@import '@/main.scss';
 
 * {
     font-family: 'Inter';
     font-weight: 600;
     line-height: 140%;
+}
+
+.custom-tooltip {
+    position: absolute;
+    z-index: 10;
+    display: none;
+    background-color: white;
+    border: 1px solid #666;
+    padding: 8px;
+    pointer-events: none;
+
+    font-size: 10px;
+    font-family: 'Inter';
+
+    border-radius: 4px;
+    box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2);
+    text-align: center;
 }
 
 label {
@@ -435,6 +516,10 @@ main {
             & .single-date-picker {
                 width: 125px;
             }
+        }
+
+        & .large-point-chart {
+            position: relative;
         }
     }
 }
