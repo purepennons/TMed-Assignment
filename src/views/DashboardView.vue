@@ -353,6 +353,7 @@ export default {
                             :input-debounce="500"
                             :max-date="today"
                             :popover="{ visibility: 'hidden' }"
+                            :masks="{ weekdays: 'WWW' }"
                             is-range
                         >
                         </VDatePicker>
@@ -385,6 +386,7 @@ export default {
                                 title-position="left"
                                 color="green"
                                 borderless
+                                :masks="{ weekdays: 'WWW' }"
                                 :popover="{ visibility: 'click' }"
                                 :max-date="today"
                                 :input-debounce="500"
