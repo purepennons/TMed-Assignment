@@ -151,7 +151,7 @@ const defaultLargePointChartOptions = () => ({
             text: 'Pulse'
         },
         tickInterval: 25,
-        min: 0,
+        min: 0
     },
     legend: {
         enabled: false
@@ -238,6 +238,16 @@ export default {
                 xAxis: {
                     min: initialRealTimeMinDateTime,
                     max: initialRealTimeMaxDateTime
+                },
+                yAxis: {
+                    labels: {
+                        formatter: function () {
+                            if (this.isLast) {
+                                return ''
+                            }
+                            return this.value
+                        }
+                    }
                 },
                 series: [
                     {
