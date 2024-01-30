@@ -42,14 +42,24 @@
         }
     }
 
+    & .vc-day-content:hover {
+        border-radius: 8px;
+    }
+
     & .vc-highlight-bg-light {
         background-color: #f1f2ff;
-        border-top: 1px solid #2BA558;
-        border-bottom: 1px solid #2BA558;
+        border-top: 1px solid #2ba558;
+        border-bottom: 1px solid #2ba558;
 
-        &.vc-highlight-base-start, &.vc-highlight-base-end {
-            background: #2BA558;
+        &.vc-highlight-base-start,
+        &.vc-highlight-base-end {
+            background-color: #2ba558;
         }
+    }
+
+    & .vc-highlight-bg-outline {
+        background-color: #2ba558;
+        border-radius: 8px;
     }
 
     & .vc-highlight-bg-solid {
@@ -61,7 +71,6 @@
     }
 
     & .vc-highlight-content-light {
-        color: #2BA558;
-
+        color: #2ba558;
     }
 }
