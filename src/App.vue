@@ -9,6 +9,12 @@ import { RouterView } from 'vue-router'
 <style lang="scss">
 // v-calendar overwrite
 .vc-calendar-date-picker {
+    * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+
     &.vc-container {
         border-radius: 8px;
         border-bottom: 3px solid #ededed;

@@ -11,6 +11,9 @@ import router from './router'
 
 import "@fontsource/inter/600.css"
 import "@fontsource/poppins/400.css"
+import "@fontsource/poppins/500.css"
+import "@fontsource/poppins/600.css"
+import "@fontsource/poppins/700.css"
 import "bootstrap/dist/css/bootstrap.css";
 import 'v-calendar/style.css';
 

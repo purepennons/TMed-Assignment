@@ -352,9 +352,6 @@ export default {
 
 <style lang="scss" scoped>
 * {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
     font-family: 'Inter';
     font-weight: 600;
     line-height: 140%;
