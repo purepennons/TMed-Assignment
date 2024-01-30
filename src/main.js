@@ -2,7 +2,6 @@ import "@fontsource/inter"
 import "@fontsource/poppins"
 
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 import HighchartsVue from 'highcharts-vue'
 import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
 
@@ -23,7 +22,6 @@ const app = createApp(App)
 
 app.use(HighchartsVue)
 app.use(setupCalendar, {})
-app.use(createPinia())
 app.use(router)
 
 app.component('VCalendar', Calendar)
